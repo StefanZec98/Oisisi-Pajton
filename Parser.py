@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import re
 import os
-#from html.parser import HTMLParser
+from html.parser import HTMLParser
 
-from HTMLParser import HTMLParser
 
 class Parser(HTMLParser):
     """

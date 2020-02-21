@@ -4,13 +4,14 @@ import os
 from Parser import Parser
 from Graf import Graph
 from time import time
-
-
-
+from Trie import *
+import copy
+from Obrada import  pretraga_rangiranje
 if __name__ == '__main__':
-    parser = Parser()
-    rootdir = 'C:\\Users\\stefan\\Desktop\\Drugi projekat oisisi\\python-2.7.7-docs-html'
 
+    parser = Parser()
+    rootdir ='C:\\Users\\neman\Downloads\\nas projekat\\Oisisi-Pajton\\python-2.7.7-docs-html'
+    recnik = {}  # recnik u koji kao kljuc ide putanja a kao vrednost ide trie svih reci
     brojac = 0
     graf = Graph()
     pocetnoVreme = time()
@@ -18,18 +19,38 @@ if __name__ == '__main__':
         for file in files:
             # if file.endswith(".html"):
             if os.path.join(subdir, file).strip()[-4:] == 'html':
-
+                root = TrieNode('')
                 putanja = os.path.abspath(subdir + os.sep + file).lower()
                 reci = parser.parse(putanja)[1]
                 linkovi = parser.parse(putanja)[0]
                 for i in linkovi:
                     graf.addEdge(putanja, os.path.abspath(i).lower())
-
-
-   # print(graf.__str__())
-
-    print(graf.getVertices())
+                for rec in reci:
+                    add(root, rec.lower())
+                recnik[putanja] = root
 
     krajnjeVreme = time()
     Vreme_popunjavanja = krajnjeVreme - pocetnoVreme
     print("Vreme popunjavanja: " + str(Vreme_popunjavanja) + " sekudni.")
+
+
+    # print(graf.getVertices())
+
+
+#----------------------------------------------------------------
+    unet_tekst = ""
+    while unet_tekst.lower() != 'izlaz':
+
+
+        print("Odradice se pretraga rangiranje i ispis rezultata istovremeno")
+        print("Za pretragu pojedinačnih reči razdvojiti ih razmakom")
+        print("--------  rec--operator--rec...  ----------")
+
+        unet_tekst = input(">>> ")
+        if unet_tekst.lower() == 'izlaz':
+            break
+
+        pretraga_rangiranje(recnik, unet_tekst, graf)
+
+
+
