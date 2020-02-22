@@ -18,8 +18,8 @@ class Set:
         '''
 
         recnikNovi={}
-        for putanja1, value in prviRecnik.iteritems():
-            for putanja2, value2 in drugiRecnik.iteritems():
+        for putanja1, value in prviRecnik.items():
+            for putanja2, value2 in drugiRecnik.items():
                 if putanja1 == putanja2:
                     recnikNovi[putanja1] = value + value2
 
@@ -45,18 +45,18 @@ class Set:
         recnikNovi={}
 
         # prvo ubacujem one iz unije
-        for putanja1, value in prviRecnik.iteritems():
-            for putanja2, value2 in drugiRecnik.iteritems():
+        for putanja1, value in prviRecnik.items():
+            for putanja2, value2 in drugiRecnik.items():
                 if putanja1 == putanja2:
                     recnikNovi[putanja1] = value + value2
 
         # zatim ubacujemo one koji su u prvoj a nisu u drugoj
-        for putanja1, value in prviRecnik.iteritems():
+        for putanja1, value in prviRecnik.items():
             if putanja1 not in drugiRecnik:
                 recnikNovi[putanja1] = value
 
         # zatim ubacujemo one koji su u drugoj a nisu u prvoj
-        for putanja2, value in drugiRecnik.iteritems():
+        for putanja2, value in drugiRecnik.items():
             if putanja2 not in prviRecnik:
                 recnikNovi[putanja2] = value
 
@@ -77,7 +77,7 @@ class Set:
 
         recnikNovi={}
 
-        for putanja1, value in prviRecnik.iteritems():
+        for putanja1, value in prviRecnik.items():
             if putanja1 not in drugiRecnik:
                 recnikNovi[putanja1] = value
 

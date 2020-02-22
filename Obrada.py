@@ -2,14 +2,35 @@ from Trie import  pretraga_stablo
 
 import re
 import os
+from Set import *
 
 def pretraga_rangiranje(recnik, reci, graf):
 
+    s = Set()
     reci2 = reci.lower()
     listaReciBezOperanada = []
     listaReci = reci2.strip().split(" ")
     pravljenjeListe_Recnika_I_Operanada(listaReci, recnik, graf, listaReciBezOperanada)
     listaRecnikaIOperanada = listaReci #[recnik1 and recnik2 or recnik3....]
+
+    while len(listaRecnikaIOperanada) != 1:
+        if listaRecnikaIOperanada[1] == 'and':
+            recnikAND = s.pretragaAND(listaRecnikaIOperanada[0], listaRecnikaIOperanada[2])
+            del listaRecnikaIOperanada[0:2]
+            listaRecnikaIOperanada[0] = recnikAND
+        elif listaRecnikaIOperanada[1] == 'or':
+            recnikOR = s.pretragaOR(listaRecnikaIOperanada[0], listaRecnikaIOperanada[2])
+            del listaRecnikaIOperanada[0:2]
+            listaRecnikaIOperanada[0] = recnikOR
+        elif listaRecnikaIOperanada[1] == 'not':
+            recnikNOT = s.pretragaNOT(listaRecnikaIOperanada[0], listaRecnikaIOperanada[2])
+            del listaRecnikaIOperanada[0:2]
+            listaRecnikaIOperanada[0] = recnikNOT
+        else:
+            listaRecnikaIOperanada[1] = pretragaReci(recnik, listaRecnikaIOperanada[1], graf)
+            recnikOR = s.pretragaOR(listaRecnikaIOperanada[0], listaRecnikaIOperanada[1])
+            del listaRecnikaIOperanada[0:1]
+            listaRecnikaIOperanada[0] = recnikOR
 
 
 def pravljenjeListe_Recnika_I_Operanada(listaReci, recnik1, graf, prosledjeneReci):#listaReci, recnik1
