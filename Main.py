@@ -7,10 +7,13 @@ from time import time
 from Trie import *
 import copy
 from Obrada import  pretraga_rangiranje
+
 if __name__ == '__main__':
 
+    print("Popunjavanje grafa i stabla...")
+
     parser = Parser()
-    rootdir ='C:\\Users\\neman\Downloads\\nas projekat\\Oisisi-Pajton\\python-2.7.7-docs-html'
+    rootdir ='C:\\Users\\stefan\\Desktop\\oisisi-pajton2\\Oisisi-Pajton\\python-2.7.7-docs-html'
     recnik = {}  # recnik u koji kao kljuc ide putanja a kao vrednost ide trie svih reci
     brojac = 0
     graf = Graph()
@@ -34,7 +37,7 @@ if __name__ == '__main__':
     print("Vreme popunjavanja: " + str(Vreme_popunjavanja) + " sekudni.")
 
 
-    # print(graf.getVertices())
+    #print(graf.getVertices())
 
 
 #----------------------------------------------------------------
@@ -44,6 +47,7 @@ if __name__ == '__main__':
 
         print("Odradice se pretraga rangiranje i ispis rezultata istovremeno")
         print("Za pretragu pojedinačnih reči razdvojiti ih razmakom")
+        print("Ukucajte rec ----IZLAZ----- za gasenje programa")
         print("--------  rec--operator--rec...  ----------")
 
         unet_tekst = input(">>> ")

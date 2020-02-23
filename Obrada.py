@@ -1,5 +1,6 @@
 from Trie import  pretraga_stablo
-
+import operator
+from Pomocna import *
 import re
 import os
 from Set import *
@@ -31,7 +32,7 @@ def pretraga_rangiranje(recnik, reci, graf):
             recnikOR = s.pretragaOR(listaRecnikaIOperanada[0], listaRecnikaIOperanada[1])
             del listaRecnikaIOperanada[0:1]
             listaRecnikaIOperanada[0] = recnikOR
-
+    ispisRangiranePretrage(listaRecnikaIOperanada[0],listaReciBezOperanada)
 
 def pravljenjeListe_Recnika_I_Operanada(listaReci, recnik1, graf, prosledjeneReci):#listaReci, recnik1
     '''
@@ -80,13 +81,55 @@ def pretragaReci(recnik1, rec,graf):
             recnikReci[key] = int(pretraga_stablo(value, rec)[1])
             print("Naziv fajla: " + str(ispisNazivaFajla(key)) +" -> " + "broj pojavljivanja reci u fajlu ------->" + str( recnikReci[key]))
             '''
+
+            #ispis da vidimo da li radi rangiranje
+            '''
             r+=1;
             print(str(r) + ". " + "Naziv fajla: " + str(ispisNazivaFajla(key)) + " -> " + "rang ------->" + str( recnikReci[key]))
-
+            '''
     return recnikReci #key: putanja,  vrednost: broj tj rang za tu rec na toj putanji
+
+
+def ispisRangiranePretrage(krajnjiRecnik, prosledjeneReci):
+    '''
+        Metoda koja od recnika pravi niz objekata, sortira ga i kasnije ispisuje sve rezultate.
+
+        Args:
+            krajnjiRecnik(dict): Recnik putanja i vrednosti
+        '''
+
+    nizObjekata = []
+    for key, value in krajnjiRecnik.items(): #niz objekata sa linkovima i rangovima
+            o=Objekat(key,value)
+            nizObjekata.append(o)
+
+
+    sortiranjePoRangu(nizObjekata) #sortiramo niz objekata po rangu
+
+    broj = 0
+
+    for i in reversed(nizObjekata):
+        broj += 1
+        print(str(broj) + ": " + "Naziv fajla: " + ispisNazivaFajla(str(i.link)))
+        print("Prioritet fajla : " + str(i.rang))  # + '\n'
+
+
+
 
 
 def ispisNazivaFajla(link):
 
     a = link.split("\\")
     return a[-1][:-5]
+
+
+def sortiranjePoRangu(nizObjekata):  #algoritam za sortiranje po rangu
+    if(len(nizObjekata) == 0):
+        print("Error")
+    sortiraniNizObjekata = nizObjekata
+    for i in range(0, len(sortiraniNizObjekata)):
+        for j in range(0, len(sortiraniNizObjekata)):
+            if sortiraniNizObjekata[j].rang > sortiraniNizObjekata[i].rang:
+                sortiraniNizObjekata[i], sortiraniNizObjekata[j] = sortiraniNizObjekata[j], sortiraniNizObjekata[i] #ako je drugi veci menjamo mesta
+    return sortiraniNizObjekata
+
