@@ -99,9 +99,9 @@ def ispisRangiranePretrage(krajnjiRecnik, prosledjeneReci):
         '''
 
     nizObjekata = []
-    for key, value in krajnjiRecnik.items(): #niz objekata sa linkovima i rangovima
+    for key, value in krajnjiRecnik.items():
             o=Objekat(key,value)
-            nizObjekata.append(o)
+            nizObjekata.append(o) #niz objekata sa linkovima i rangovima
 
 
     sortiranjePoRangu(nizObjekata) #sortiramo niz objekata po rangu
@@ -123,13 +123,14 @@ def ispisNazivaFajla(link):
     return a[-1][:-5]
 
 
-def sortiranjePoRangu(nizObjekata):  #algoritam za sortiranje po rangu
-    if(len(nizObjekata) == 0):
-        print("Error")
-    sortiraniNizObjekata = nizObjekata
-    for i in range(0, len(sortiraniNizObjekata)):
-        for j in range(0, len(sortiraniNizObjekata)):
-            if sortiraniNizObjekata[j].rang > sortiraniNizObjekata[i].rang:
-                sortiraniNizObjekata[i], sortiraniNizObjekata[j] = sortiraniNizObjekata[j], sortiraniNizObjekata[i] #ako je drugi veci menjamo mesta
-    return sortiraniNizObjekata
 
+
+def sortiranjePoRangu(nizObjekata):  #ovo je bubble_sort
+    n = len(nizObjekata)
+    if (len(nizObjekata) == 0):
+        print("Greska niz je prazan i ne moze da se sortira")
+
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if nizObjekata[j].rang > nizObjekata[j + 1].rang:
+                nizObjekata[j], nizObjekata[j + 1] = nizObjekata[j + 1], nizObjekata[j]

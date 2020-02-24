@@ -24,7 +24,7 @@ def add(root, word = str):
     node.word_finished = True            #kraj reci
 
 
-def pretraga_stablo(root, prefix = str): #ovo necemo koristiti ali se ovde radi pretraga po stablu
+def pretraga_stablo(root, prefix = str):
 
     node = root
     if not root.children:               #ako cvor neka karakter, tj ako je prazan
@@ -47,7 +47,6 @@ if __name__ == "__main__":
     add(root, "nemanja")            #provera pretrage po stablu
     add(root, 'nemanjastefan')
 
-    print(pretraga(root, 'nema'))
     print(pretraga(root, 'nemanja'))
     print(pretraga(root, 'prefiksajmo'))
 '''
