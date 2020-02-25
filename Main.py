@@ -5,31 +5,35 @@ from Parser import Parser
 from Graf import Graph
 from time import time
 from Trie import *
-import copy
+import  copy
 from Obrada import  pretraga_rangiranje
 
-if __name__ == '__main__':
+if __name__=='__main__':
 
     print("Popunjavanje grafa i stabla...")
 
     parser = Parser()
-    rootdir ='C:\\Users\\stefan\\Desktop\\oisisi-pajton2\\Oisisi-Pajton\\python-2.7.7-docs-html'
+    rootdir ='C:\\Users\\Neca je car\\Desktop\\pajton projekat\\Oisisi-Pajton\\python-2.7.7-docs-html'
     recnik = {}  # recnik u koji kao kljuc ide putanja a kao vrednost ide trie svih reci
     brojac = 0
     graf = Graph()
     pocetnoVreme = time()
+    root=TrieNode("*")
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
             # if file.endswith(".html"):
             if os.path.join(subdir, file).strip()[-4:] == 'html':
-                root = TrieNode('')
+
                 putanja = os.path.abspath(subdir + os.sep + file).lower()
                 reci = parser.parse(putanja)[1]
                 linkovi = parser.parse(putanja)[0]
-                for i in linkovi:
-                    graf.addEdge(putanja, os.path.abspath(i).lower())
+
+                cvor = graf.insert_vertex(putanja)
+                #for i in linkovi:
+                   # graf.addEdge(putanja, os.path.abspath(i).lower())
+
                 for rec in reci:
-                    add(root, rec.lower())
+                    add(root, rec.lower(), cvor)
                 recnik[putanja] = root
 
     krajnjeVreme = time()
@@ -54,7 +58,4 @@ if __name__ == '__main__':
         if unet_tekst.lower() == 'izlaz':
             break
 
-        pretraga_rangiranje(recnik, unet_tekst, graf)
-
-
-
+      #  pretraga_rangiranje(recnik, unet_tekst, graf)
