@@ -1,6 +1,5 @@
 import re
 import os
-
 from Parser import Parser
 from Graf import Graph
 from time import time
@@ -8,17 +7,18 @@ from Trie import *
 import  copy
 from Obrada import  pretraga_rangiranje
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     print("Popunjavanje grafa i stabla...")
 
     parser = Parser()
-    rootdir ='C:\\Users\\Neca je car\\Desktop\\pajton projekat\\Oisisi-Pajton\\python-2.7.7-docs-html'
+    rootdir ='C:\\Users\\stefan\\Desktop\\Oisisi-pajton2-konacni\\Oisisi-Pajton\\python-2.7.7-docs-html'
     recnik = {}  # recnik u koji kao kljuc ide putanja a kao vrednost ide trie svih reci
     brojac = 0
     graf = Graph()
     pocetnoVreme = time()
     root=TrieNode("*")
+
     for subdir, dirs, files in os.walk(rootdir):
         for file in files:
             # if file.endswith(".html"):
@@ -29,9 +29,9 @@ if __name__=='__main__':
                 linkovi = parser.parse(putanja)[0]
 
                 cvor = graf.insert_vertex(putanja)
-                #for i in linkovi:
-                   # graf.addEdge(putanja, os.path.abspath(i).lower())
-
+                for i in linkovi:
+                    cvor1 = graf.insert_vertex(i)
+                    graf.insert_edge(cvor, cvor1, i)
                 for rec in reci:
                     add(root, rec.lower(), cvor)
                 recnik[putanja] = root
@@ -41,7 +41,7 @@ if __name__=='__main__':
     print("Vreme popunjavanja: " + str(Vreme_popunjavanja) + " sekudni.")
 
 
-    #print(graf.getVertices())
+
 
 
 #----------------------------------------------------------------
@@ -52,10 +52,17 @@ if __name__=='__main__':
         print("Odradice se pretraga rangiranje i ispis rezultata istovremeno")
         print("Za pretragu pojedinačnih reči razdvojiti ih razmakom")
         print("Ukucajte rec ----IZLAZ----- za gasenje programa")
-        print("--------  rec--operator--rec...  ----------")
+        print("--------  REC--OPERATOR--REC!!...  ----------")
 
         unet_tekst = input(">>> ")
         if unet_tekst.lower() == 'izlaz':
             break
 
-      #  pretraga_rangiranje(recnik, unet_tekst, graf)
+        pretraga_rangiranje(recnik, unet_tekst, graf,root)
+
+
+
+
+
+
+

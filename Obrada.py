@@ -1,17 +1,17 @@
-from Trie import  pretraga_stablo
 import operator
 from Pomocna import *
+from Trie import trazi_rec
 import re
 import os
 from Set import *
 
-def pretraga_rangiranje(recnik, reci, graf):
+def pretraga_rangiranje(recnik, reci, graf,root):
 
     s = Set()
     reci2 = reci.lower()
     listaReciBezOperanada = []
     listaReci = reci2.strip().split(" ")
-    pravljenjeListe_Recnika_I_Operanada(listaReci, recnik, graf, listaReciBezOperanada)
+    pravljenjeListe_Recnika_I_Operanada(listaReci, recnik, graf, listaReciBezOperanada,root)
     listaRecnikaIOperanada = listaReci #[recnik1 and recnik2 or recnik3....]
 
     while len(listaRecnikaIOperanada) != 1:
@@ -28,13 +28,12 @@ def pretraga_rangiranje(recnik, reci, graf):
             del listaRecnikaIOperanada[0:2]
             listaRecnikaIOperanada[0] = recnikNOT
         else:
-            listaRecnikaIOperanada[1] = pretragaReci(recnik, listaRecnikaIOperanada[1], graf)
             recnikOR = s.pretragaOR(listaRecnikaIOperanada[0], listaRecnikaIOperanada[1])
             del listaRecnikaIOperanada[0:1]
             listaRecnikaIOperanada[0] = recnikOR
     ispisRangiranePretrage(listaRecnikaIOperanada[0],listaReciBezOperanada)
 
-def pravljenjeListe_Recnika_I_Operanada(listaReci, recnik1, graf, prosledjeneReci):#listaReci, recnik1
+def pravljenjeListe_Recnika_I_Operanada(listaReci, recnik1, graf, prosledjeneReci,root):#listaReci, recnik1
     '''
         Funkcija koja menja listu tako da je svaka rec u stvari recnik
         u kojem je kljuc putanja fajla, a vrednost broj pojavljivanja.
@@ -50,45 +49,34 @@ def pravljenjeListe_Recnika_I_Operanada(listaReci, recnik1, graf, prosledjeneRec
         if rec != 'and' and rec != 'or' and rec != 'not':
             prosledjeneReci.append(rec)
 
-            listaReci[brojac] = pretragaReci(recnik1, rec,graf) #od liste reci pravimo npr recnik1 and recnik 2 or recnik3...
+            if(trazi_rec(root,rec)[1]==0):
+                return
+            pronadjenRecnik=trazi_rec(root,rec)[2]
+
+            #for item in pronadjenRecnik.items():
+               # print(item)
+
+            listaReci[brojac] = odrediRang(pronadjenRecnik,graf) #od liste reci pravimo npr recnik1 and recnik 2 or recnik3...
         brojac += 1
 
 
 
-def pretragaReci(recnik1, rec,graf):
 
+def odrediRang(ulazniRecnik,graf):
+    rangRecnik = {}
+    for key in ulazniRecnik.keys():
 
-    recnikReci = {}
-    brojPojavljivanja = 0
-    r=0;
-    for key, value in recnik1.items():
+        rang = ulazniRecnik[key] * 3 #broj reci na toj stranici tj tom cvoru
+        linkovi = graf.incident_edges(key, False) #posto je graf usmeren vraca linkove koji ulazi u cvor
+        rang += len(linkovi) * 0.15
 
-        for k in (graf.vertList[key].connectedTo):
-            try:
+        for edge in linkovi:
+            prekoputa = edge.opposite(key) #Vraća čvor koji se nalazi sa druge strane čvora v ove ivice.
 
-                brojPojavljivanja += int(pretraga_stablo(recnik1[k.id], rec)[1]) #brojPojavljivanja je broj pojavljivanja te reci u svim linkovima
-            except:
-                pass
-
-
-        if int(pretraga_stablo(value, rec)[1]) != 0: #find_prefix(value, rec)[0] == True
-
-            rang = pretraga_stablo(value, rec)[1] + brojPojavljivanja * 0.35 + len(graf.vertList[key].connectedTo) * 0.7
-            recnikReci[key] = rang
-
-            # ovo je pretraga ali je zakomentarisana jer smo je ukombinovali preko rangiranja
-            '''     
-            recnikReci[key] = int(pretraga_stablo(value, rec)[1])
-            print("Naziv fajla: " + str(ispisNazivaFajla(key)) +" -> " + "broj pojavljivanja reci u fajlu ------->" + str( recnikReci[key]))
-            '''
-
-            #ispis da vidimo da li radi rangiranje
-            '''
-            r+=1;
-            print(str(r) + ". " + "Naziv fajla: " + str(ispisNazivaFajla(key)) + " -> " + "rang ------->" + str( recnikReci[key]))
-            '''
-    return recnikReci #key: putanja,  vrednost: broj tj rang za tu rec na toj putanji
-
+            if prekoputa in ulazniRecnik.keys():
+                rang += ulazniRecnik[prekoputa] * 0.25 #reci preko puta cvora
+        rangRecnik[key.element()] = rang #formira recnik gde je vrednost rang
+    return rangRecnik
 
 def ispisRangiranePretrage(krajnjiRecnik, prosledjeneReci):
     '''
@@ -99,10 +87,12 @@ def ispisRangiranePretrage(krajnjiRecnik, prosledjeneReci):
         '''
 
     nizObjekata = []
-    for key, value in krajnjiRecnik.items():
+    try:
+        for key, value in krajnjiRecnik.items():
             o=Objekat(key,value)
             nizObjekata.append(o) #niz objekata sa linkovima i rangovima
-
+    except:
+        print("Došlo je do greške-uneli ste rec koja ne postoji, pokušajte ponovo!")
 
     sortiranjePoRangu(nizObjekata) #sortiramo niz objekata po rangu
 

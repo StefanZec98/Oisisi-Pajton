@@ -18,13 +18,15 @@ class Set:
         '''
 
         recnikNovi={}
-        for putanja1, value in prviRecnik.items():
-            for putanja2, value2 in drugiRecnik.items():
-                if putanja1 == putanja2:
-                    recnikNovi[putanja1] = value + value2
+        try:
+             for putanja1, value in prviRecnik.items():
+                for putanja2, value2 in drugiRecnik.items():
+                     if putanja1 == putanja2:
+                         recnikNovi[putanja1] = value + value2
 
-        return recnikNovi
-
+             return recnikNovi
+        except:
+            print("Došlo je do greške prilikom unosa upita, pokušajte ponovo")
 
     def pretragaOR(self,prviRecnik, drugiRecnik):  # unija
         '''
@@ -45,22 +47,25 @@ class Set:
         recnikNovi={}
 
         # prvo ubacujem one iz unije
-        for putanja1, value in prviRecnik.items():
-            for putanja2, value2 in drugiRecnik.items():
-                if putanja1 == putanja2:
-                    recnikNovi[putanja1] = value + value2
+        try:
+             for putanja1, value in prviRecnik.items():
+                for putanja2, value2 in drugiRecnik.items():
+                     if putanja1 == putanja2:
+                         recnikNovi[putanja1] = value + value2
 
-        # zatim ubacujemo one koji su u prvoj a nisu u drugoj
-        for putanja1, value in prviRecnik.items():
-            if putanja1 not in drugiRecnik:
-                recnikNovi[putanja1] = value
+            # zatim ubacujemo one koji su u prvoj a nisu u drugoj
+             for putanja1, value in prviRecnik.items():
+                     if putanja1 not in drugiRecnik:
+                            recnikNovi[putanja1] = value
 
-        # zatim ubacujemo one koji su u drugoj a nisu u prvoj
-        for putanja2, value in drugiRecnik.items():
-            if putanja2 not in prviRecnik:
-                recnikNovi[putanja2] = value
+             # zatim ubacujemo one koji su u drugoj a nisu u prvoj
+             for putanja2, value in drugiRecnik.items():
+                     if putanja2 not in prviRecnik:
+                        recnikNovi[putanja2] = value
 
-        return recnikNovi
+             return recnikNovi
+        except:
+            print("Došlo je do greške prilikom unosa upita, pokušajte ponovo")
 
     def pretragaNOT(self,prviRecnik, drugiRecnik):
         '''
@@ -76,9 +81,12 @@ class Set:
         '''
 
         recnikNovi={}
+        try:
+             for putanja1, value in prviRecnik.items():
+                 if putanja1 not in drugiRecnik:
+                     recnikNovi[putanja1] = value
 
-        for putanja1, value in prviRecnik.items():
-            if putanja1 not in drugiRecnik:
-                recnikNovi[putanja1] = value
+             return recnikNovi
 
-        return recnikNovi
+        except:
+            print("Došlo je do greške prilikom unosa upita, pokušajte ponovo")
