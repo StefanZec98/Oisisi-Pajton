@@ -1,6 +1,5 @@
 import operator
 from locale import atoi
-
 from Pomocna import *
 from Trie import trazi_rec
 import re
@@ -106,17 +105,17 @@ def ispisRangiranePretrage(krajnjiRecnik, prosledjeneReci):
     for i in reversed(nizObjekata):
         broj += 1
         print(str(broj) + ": " + "Naziv fajla: " + ispisNazivaFajla(str(i.link)))
-        print("Prioritet fajla : " + str(i.rang))  # + '\n'
+        print("Prioritet fajla : " + str(i.rang))
 
 #-------------------PAGINACIJA
 
     while True:
-        print("Za izlaz iz opcije - bilo sta nelogicno")
+
         N = input("Broj stranica na jednoj stranici: ")
         if N.isdigit():
             N = atoi(N)
             if N > 0:
-                paginacijaStranica(nizObjekata, N)  # Mozda bismo trebali rangirane fajlove!
+                paginacijaStranica(nizObjekata, N)
                 break
             else:
                 break
@@ -189,19 +188,19 @@ def paginacijaStranica(nizObjekata, N):
         print("Stisnite 0 za izlaz")
 
 
-        option = input("choose option: ")
+        option = input("Izaberite broj: ")
 
         if option == "0":
             break
         if pr == True:
-            if option == "Prev":
+            if option == "Brojevi":
                 currentPage = p.page(currentPage.previous_page_number())
         for i in range(1, p.num_pages+1):
             if option == str(i):
                 currentPage = p.page(i)
                 break
         if n == True:
-            if option == "Next":
+            if option == "Dalje":
                 currentPage = p.page(currentPage.next_page_number())
 
         if option == "N":
