@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 class Graph:
     """ Reprezentacija jednostavnog grafa"""
@@ -53,7 +52,7 @@ class Graph:
             return '({0},{1},{2})'.format(self._origin, self._destination, self._element)
 
     # ------------------------- Metode klase Graph -------------------------
-    def __init__(self, directed=True):
+    def __init__(self, directed=False):
         """ Kreira prazan graf (podrazumevana vrednost je da je neusmeren).
 
         Ukoliko se opcioni parametar directed postavi na True, kreira se usmereni graf.
@@ -98,7 +97,7 @@ class Graph:
         """ Vraća ivicu između čvorova u i v ili None ako nisu susedni."""
         self._validate_vertex(u)
         self._validate_vertex(v)
-        return self._outgoing[u].get(v)  # vratilo bi nulu da nisu povezana ova dva cvora
+        return self._outgoing[u].get(v)
 
     def degree(self, v, outgoing=True):
         """ Vraća stepen čvora - broj(odlaznih) ivica iz čvora v u grafu.
@@ -114,19 +113,23 @@ class Graph:
 
         Ako je graf usmeren, opcioni parametar outgoing se koristi za brojanje dolaznih ivica.
         """
-
         self._validate_vertex(v)
-        adj = self._outgoing if outgoing else self._incoming
-        return adj[v].values()
-
-
+        if outgoing:
+            return self._outgoing[v].values()
+        else:
+            return self._incoming[v].values()
 
     def insert_vertex(self, x=None):
         """ Ubacuje i vraća novi čvor (Vertex) sa elementom x"""
-        v = self.Vertex(x)
-        self._outgoing[v] = {}
-        if self.is_directed():
-            self._incoming[v] = {}  # mapa različitih vrednosti za dolazne čvorove
+        postoji = False
+        for vertex in self.vertices(): #vertices vraca iteratore nad svim cvorovima grafa
+            if vertex.element() == x:  #ne ubacujemo taj cvor ako on vec postoji u grafu
+                postoji = True
+                return vertex
+        if not postoji: #ako ne postoji ubacimo ga
+            v = self.Vertex(x)
+            self._outgoing[v] = {}
+            self._incoming[v] = {}
         return v
 
     def insert_edge(self, u, v, x=None):
@@ -135,8 +138,11 @@ class Graph:
         Baca ValueError ako u i v nisu čvorovi grafa.
         Baca ValueError ako su u i v već povezani.
         """
-        if self.get_edge(u, v) is not None:  # uključuje i proveru greške, ako nadje granu i ako nije nula baca eror
-            raise ValueError('u and v are already adjacent')
-        e = self.Edge(u, v, x)
-        self._outgoing[u][v] = e
-        self._incoming[v][u] = e
+        if self.get_edge(u, v) is not None:  # uključuje i proveru greške
+            return None
+            # raise ValueError('u and v are already adjacent')
+        else:
+            e = self.Edge(u, v, x)
+            self._outgoing[u][v] = e
+            self._incoming[v][u] = e
+            return e

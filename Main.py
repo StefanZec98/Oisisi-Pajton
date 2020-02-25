@@ -12,7 +12,7 @@ if __name__ == '__main__':
     print("Popunjavanje grafa i stabla...")
 
     parser = Parser()
-    rootdir ='C:\\Users\\stefan\\Desktop\\Oisisi-pajton2-konacni\\Oisisi-Pajton\\python-2.7.7-docs-html'
+    rootdir ='C:\\Users\\stefan\\Desktop\\Oisisi-projekat2\\Oisisi-Pajton\\python-2.7.7-docs-html'
     recnik = {}  # recnik u koji kao kljuc ide putanja a kao vrednost ide trie svih reci
     brojac = 0
     graf = Graph()
@@ -40,26 +40,23 @@ if __name__ == '__main__':
     Vreme_popunjavanja = krajnjeVreme - pocetnoVreme
     print("Vreme popunjavanja: " + str(Vreme_popunjavanja) + " sekudni.")
 
-
-
-
+    #print(graf.vertex_count())
 
 #----------------------------------------------------------------
     unet_tekst = ""
     while unet_tekst.lower() != 'izlaz':
 
-
+        print("\n")
         print("Odradice se pretraga rangiranje i ispis rezultata istovremeno")
-        print("Za pretragu pojedinačnih reči razdvojiti ih razmakom")
-        print("Ukucajte rec ----IZLAZ----- za gasenje programa")
-        print("--------  REC--OPERATOR--REC!!...  ----------")
+        print("Nakon toga ce te imati mogucnost paginacije rezultata pretrage\n")
+        print("Ukucajte rec ----IZLAZ----- za gasenje programa\n")
+        print("--------  REC--OPERATOR--REC!! || REC--REC--REC...  ----------")
 
         unet_tekst = input(">>> ")
         if unet_tekst.lower() == 'izlaz':
             break
 
         pretraga_rangiranje(recnik, unet_tekst, graf,root)
-
 
 
 
